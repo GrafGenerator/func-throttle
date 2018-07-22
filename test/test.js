@@ -127,4 +127,51 @@ describe("func-throttle", function() {
         })
     });
   });
+
+  describe("when process target func arguments", function() {
+    it("bypass supplied arguments", function(done) {
+      var test1 = 1;
+      var test2 = "2";
+      var test3 = {
+        date: new Date()
+      };
+
+      var testFunc = function(p1, p2, p3){
+        assert.equal(p1, test1);
+        assert.equal(p2, test2);
+        assert.equal(p3, test3);
+      };
+
+      var throttledFunc = funcThrottle(testFunc, Promise).occurs(1).per(1000);
+
+      throttledFunc(test1, test2, test3)
+        .then(function(){
+          done();
+        });
+    });
+
+    it("throw if supplied arguments count less than function expects by definition", function(done) {
+      var test1 = 1;
+      var test2 = "2";
+
+      var testFunc = function(p1, p2, p3){
+      };
+
+      var throttledFunc = funcThrottle(testFunc, Promise).occurs(1).per(1000);
+
+      try {
+        throttledFunc(test1, test2);
+        done("no exception thrown!")
+      }
+      catch(e){
+        assert.equal(e.message, "Target function expects at least 3 arguments, given 2");
+        done();
+      }
+    });
+  });
+
+  // exceptions for input
+  // all modifiers
+  // zero interval
+  
 });

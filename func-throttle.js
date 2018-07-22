@@ -9,10 +9,15 @@
     };
 
     var FuncThrottleFn = function(func, Promise){
+        if(typeof func !== "function"){
+            throw new Error("Expect target to be function!");
+        }
         if(Promise === undefined || Promise === null){
-            throw "Provide Promise implementation to works with FuncThrottle"
+            throw new Error("Provide Promise implementation to works with FuncThrottle");
         }
         var func = func;
+        var funcArgsCount = func.length;
+
         var interval = 1000;
         var occurences = 1;
         var argsSelectorFn = lastSet;
@@ -34,8 +39,8 @@
             paramsQueue = [];
 
             if(paramsSet !== null){
-                if(func){
-                    var originalResult = func.call(null, paramsSet);
+                if(func){ // todo: really need this?!
+                    var originalResult = func.apply(null, paramsSet);
                     resolve(originalResult);
                 }
             }
@@ -54,13 +59,18 @@
             }
         };
 
-        
-        promiseRequested = false;
-
         var neverFulfilledPromise = new Promise(function(_, __){});
 
         var throttleFn = function(){
-            paramsQueue.push([].slice.call(arguments, 0));
+            var args = [].slice.call(arguments, 0);
+
+            if(funcArgsCount > 0) {
+                if(args.length < funcArgsCount) {
+                    throw new Error("Target function expects at least " + funcArgsCount + " arguments, given " + args.length);
+                }
+            }
+
+            paramsQueue.push(args);
 
             if(timerId === null){
                 throttlePromise = new Promise(function(resolve){
