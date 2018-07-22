@@ -1,0 +1,28 @@
+{
+  "name": "func-throttle",
+  "version": "1.0.0",
+  "description": "Small no-dependencies ES5 utility to implement simple function calls throttling.",
+  "main": "func-throttle.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GrafGenerator/func-throttle.git"
+  },
+  "keywords": [
+    "func",
+    "function",
+    "throttle",
+    "throttling"
+  ],
+  "author": "Nikita Ivanov (grafgenerator@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/GrafGenerator/func-throttle/issues"
+  },
+  "homepage": "https://github.com/GrafGenerator/func-throttle#readme",
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
+}
