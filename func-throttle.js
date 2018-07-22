@@ -23,9 +23,8 @@
         this.StrategyLastParams = lastSet;
 
         var paramsQueue = [];
-        var timerId;
+        var timerId = null;
 
-        var timeout = interval / occurences;
         var timerTick;
         var throttlePromise;
         var promiseRequested = false;
@@ -41,7 +40,7 @@
                 }
             }
 
-            if(timerId !== undefined && timerId !== null){
+            if(timerId !== null){
                 clearTimeout(timerId);
             }
 
@@ -49,21 +48,25 @@
 
             if(!isStopped){
                 throttlePromise = new Promise(function(resolve){
-                    timerId = setTimeout(function(){ timerTick(resolve)}, timeout);
+                    timerId = setTimeout(function(){ timerTick(resolve)}, interval / occurences);
                 });
                 promiseRequested = false;
             }
         };
 
-        throttlePromise = new Promise(function(resolve){
-            timerId = setTimeout(function(){ timerTick(resolve)}, timeout);
-        });
+        
         promiseRequested = false;
 
         var neverFulfilledPromise = new Promise(function(_, __){});
 
         var throttleFn = function(){
-            paramsQueue.push(arguments);
+            paramsQueue.push([].slice.call(arguments, 0));
+
+            if(timerId === null){
+                throttlePromise = new Promise(function(resolve){
+                    timerId = setTimeout(function(){ timerTick(resolve)}, 0);
+                });
+            }
 
             var promise = !resolveEach && promiseRequested ? neverFulfilledPromise : throttlePromise;
             promiseRequested = true;
@@ -81,8 +84,8 @@
             return throttleFn;
         };
 
-        throttleFn.per = function(interval){
-            interval = interval;
+        throttleFn.per = function(i){
+            interval = i;
             return throttleFn;
         };
 
