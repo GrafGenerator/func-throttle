@@ -11,10 +11,17 @@
     "url": "git+https://github.com/GrafGenerator/func-throttle.git"
   },
   "keywords": [
+    "func-throtlle",
+    "function-throttle",
     "func",
     "function",
     "throttle",
-    "throttling"
+    "throttling",
+    "debounce",
+    "func-debounce"
+  ],
+  "files": [
+    "func-throttle.js"
   ],
   "author": "Nikita Ivanov (grafgenerator@gmail.com)",
   "license": "MIT",
