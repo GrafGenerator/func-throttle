@@ -4,7 +4,7 @@
   "description": "Small no-dependencies ES5 utility to implement simple function calls throttling.",
   "main": "func-throttle.js",
   "scripts": {
-    "test": "npm test"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/GrafGenerator/func-throttle#readme",
   "devDependencies": {
-    "mocha": "^5.2.0"
+    "mocha": "^5.2.0",
+    "promise": "^8.0.1"
   }
 }

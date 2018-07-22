@@ -1,10 +1,56 @@
 var assert = require("assert");
-var requestLimiter = require("../func-throttle");
+var Promise = require("promise");
+var funcThrottle = require("../func-throttle");
 
-describe('Array', function() {
-    describe('#indexOf()', function() {
-      it('should return -1 when the value is not present', function() {
-        assert.equal([1,2,3].indexOf(4), -1);
-      });
+describe("func-throttle", function() {
+  describe("in runtime", function() {
+    it("fires target func", function(done) {
+      var testFunc = function(){
+        assert.equal(true, true);
+      };
+
+      var throttledFunc = funcThrottle(testFunc, Promise).occurs(1).per(1000);
+
+      throttledFunc()
+        .then(function(){
+          done();
+        });
+    });
+
+    it("fires target func only once per interval", function(done) {
+      var callCount = 0;
+      var testFunc = function(){
+        callCount++;
+        assert.equal(callCount, 1);
+      };
+
+      var throttledFunc = funcThrottle(testFunc, Promise).occurs(1).per(1000);
+
+      var promise = null;
+      for(var i = 0; i < 10; i++){
+        var tmp = throttledFunc();
+        if(promise === null){
+          promise = tmp;
+        }
+      }
+
+      promise
+        .then(function(){
+          done();
+        })
+    });
+
+    it("resolves promise", function(done) {
+      var testFunc = function(){
+      };
+
+      var throttledFunc = funcThrottle(testFunc, Promise).occurs(1).per(1000);
+
+      throttledFunc()
+        .then(function(){
+          assert.equal(true, true);
+          done();
+        });
     });
   });
+});
