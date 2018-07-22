@@ -1,11 +1,11 @@
 (function(root){
 
     var firstSet = function(paramsQueue){
-        return paramsQueue.lenght === 0 ? null : paramsQueue[0]
+        return paramsQueue.length === 0 ? null : paramsQueue[0]
     };
 
     var lastSet = function(paramsQueue){
-        return paramsQueue.lenght === 0 ? null : paramsQueue[paramsQueue.lenght - 1]
+        return paramsQueue.length === 0 ? null : paramsQueue[paramsQueue.length - 1]
     };
 
     var FuncThrottleFn = function(func, Promise){

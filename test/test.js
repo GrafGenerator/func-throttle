@@ -52,5 +52,20 @@ describe("func-throttle", function() {
           done();
         });
     });
+
+    it("never call target func if no requests made", function(done) {
+      var testFunc = function(){
+        assert.fail("testFunc shall never be called here!")
+      };
+
+      var throttledFunc = funcThrottle(testFunc, Promise).occurs(1).per(500);
+
+      new Promise(function(resolve){
+        setTimeout(function() { resolve(); }, 1000);
+      })
+        .then(function(){
+          done();
+        });
+    });
   });
 });
